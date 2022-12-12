@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <meta charset="utf-8" />
+    <meta name="veiwport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <link rel="stylesheet" href="/global.css" />
+    <link rel="stylesheet" href="/layout.css" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Arimo&family=Overpass:wght@600;900&display=swap');
+    </style>
+</head>
+
+<body class="grid">
+    <header class="header">
+        <ul>
+            <li>
+                <a href="/">hsubox.design</a>
+            </li>
+            <li>
+                <a href="/about">about</a>
+            </li>
+        </ul>
+    </header>
+
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+
+    <footer class="footer">
+        <p>Mike Hsu's blog</p>
+        <ul>
+            <li>
+                <a href="https://github.com/hymm" class="github-link">
+                    <Image src="/images/Github-Mark-32px.png" width={24} height={24} />
+                    <span>Github</span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+</body>
+
+</html>
