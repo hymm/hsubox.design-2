@@ -1,6 +1,7 @@
 +++
 title = "Bevy Mem Leak"
 date = 2022-12-12
+tags = ["bevy", "memory leak"]
 +++
 # Tracking Down a Memory Leak in Bevy
 

@@ -15,7 +15,6 @@
     --code-dark-green: #5d6825;
 
     --code-warm-grey: #b6b0aa;
-    --code-grey: #999999;
     --code-medium-grey: #474747;
     --code-dark-grey: #1a1717;
     ;
@@ -32,7 +31,7 @@
 }
 
 .z-punctuation {
-    color: var(--code-grey);
+    color: var(--code-warm-grey);
 }
 
 .z-comment,
@@ -46,7 +45,7 @@
 .z-punctuation.z-definition.z-parameters,
 .z-punctuation.z-definition.z-string,
 .z-punctuation.z-definition.z-array {
-    color: var(--code-grey);
+    color: var(--code-warm-grey);
 }
 
 .z-keyword.z-operator {
@@ -82,7 +81,7 @@
 }
 
 .z-constant {
-    color: var(--code-grey);
+    color: var(--code-warm-grey);
 }
 
 .z-markup.z-bold,
