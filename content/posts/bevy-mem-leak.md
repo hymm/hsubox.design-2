@@ -1,6 +1,7 @@
 +++
-title = "Bevy Mem Leak"
+title = "Tracking Down a Memory Leak in Bevy"
 date = 2022-12-12
+description = "Using leak-detector-allocator to diagnose a memory leak"
 tags = ["bevy", "memory leak"]
 +++
 
@@ -107,4 +108,4 @@ render world quickly confirms that this is the problem.
 
 An easy fix is to just call clear trackers on the render world, but for consistency and a better fix we call it on all sub apps and 
 move the call on the main world out of the schedule and into App::update. That should prevent future issues and prevent memory leaks
-for downstream users of sub apps.
+for downstream users of sub apps. Running the allocation tracer on 10000 frames confirms that memory us is no longer growing in the example.
