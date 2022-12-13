@@ -12,7 +12,7 @@
     --code-dark-red: #990055;
 
     --code-green: #8fa727;
-    --code-dark-green: #5d6825;
+    --code-dark-green: #708025;
 
     --code-warm-grey: #b6b0aa;
     --code-medium-grey: #474747;
@@ -39,11 +39,8 @@
     color: var(--code-warm-grey);
 }
 
-.z-punctuation.z-definition.z-string,
 .z-punctuation.z-definition.z-variable,
-.z-punctuation.z-definition.z-string,
 .z-punctuation.z-definition.z-parameters,
-.z-punctuation.z-definition.z-string,
 .z-punctuation.z-definition.z-array {
     color: var(--code-warm-grey);
 }
@@ -75,6 +72,7 @@
 }
 
 .z-string,
+.z-punctuation.z-definition.z-string,
 .z-constant.z-other.z-symbol,
 .z-entity.z-other.z-inherited-class {
     color: var(--code-green);
@@ -100,8 +98,4 @@
 
 .z-function.z-parameters {
     color: var(--code-gold);
-}
-
-.z-punctuation.z-section.z-parameters {
-    color: var(--code-grey);
 }
