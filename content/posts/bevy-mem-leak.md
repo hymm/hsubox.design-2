@@ -3,6 +3,9 @@ title = "Bevy Mem Leak"
 date = 2022-12-12
 tags = ["bevy", "memory leak"]
 +++
+
+> DRAFT
+
 # Tracking Down a Memory Leak in Bevy
 
 A memory leak was reported in [a bevy issue](https://github.com/bevyengine/bevy/issues/6417). 
