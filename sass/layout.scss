@@ -7,9 +7,10 @@ html {
 
     --text-color: var(--medium-amber);
     --title-color: var(--medium-amber);
+    --link-color: var(--light-amber);
     --page-margin: 1rem;
     --page-max-width: calc(100vw - 2 * var(--page-margin));
-    --body-max-width: 56em;
+    --body-max-width: 50em;
 }
 
 html {
@@ -36,10 +37,11 @@ header {
 
 article>pre {
     width: 100%;
+    padding: 1rem 1.25rem;
 }
 
-.prismjs {
-    max-width: var(--page-max-width);
+code {
+    background: var(--code-dark-grey);
 }
 
 img {
@@ -106,4 +108,15 @@ article {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+}
+
+.article {
+    grid-row: span 3;
+}
+
+main {
+    grid-column: span 3;
+
+    display: grid;
+    grid-template-columns: subgrid;
 }
