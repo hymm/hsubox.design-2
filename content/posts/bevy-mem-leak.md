@@ -90,11 +90,16 @@ I used the VSCode compare files functionality to find the diffs between differen
 manually go through the diffs to see if I can find an allocation that is growing in size or a lot of small
 things not being deallocated.
 
+
+![The San Juan Mountains are beautiful!](../deallocate-and-allocate.png "San Juan Mountains")
 // picture of one frame compared to another
 
 So just comparing two frames is not enough, because some things are being allocated and deallocated every frame.
 But by comparing three frames to each other we can ignore a lot of the noise, because even though there are these things.
 The actual things being rendering is very static. i.e. an empty scene.
+
+![The San Juan Mountains are beautiful!](../growing-vec-entity.png "San Juan Mountains")
+// RawVec<Entity> grows from 1024 to 4096
 
 So after sorting through all the allocations there is one that stands out. A `RawVec<Entity>` is growing across multiple frames.
 This is probably a Vec<Entity> as `RawVec` is the underlying storage for a Vec.

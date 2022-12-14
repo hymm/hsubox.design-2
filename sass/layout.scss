@@ -46,7 +46,7 @@ code {
 }
 
 img {
-    max-width: var(--page-max-width);
+    max-width: 100%;
 }
 
 h1,
@@ -133,4 +133,9 @@ blockquote {
 
 blockquote p {
     margin: 0;
+}
+
+footer ul {
+    display: flex;
+    gap: 1.5rem;
 }
