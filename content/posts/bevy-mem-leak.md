@@ -9,19 +9,26 @@ tags = ["bevy", "memory leak"]
 
 # Tracking Down a Memory Leak in Bevy
 
-A memory leak was reported in [a bevy issue](https://github.com/bevyengine/bevy/issues/6417). 
-Where a bevy app leaked memory with only a camera added. Since this is rust
-the memory leak was likely from something that was growing like an asset or entity that
-was being repeatedly added. While this was a fairly stripped down app, bevy still has a 
-fair amount of things going on in it's default configuration that figuring out what was 
-causing the memory leak was going to be a bit of a pain if there wasn't more information 
-to go on. It's about a 2kb sized leak from my investigations.
+Recently I fixed [a memory leak](https://github.com/bevyengine/bevy/pull/6878) in Bevy.
+The issue was reported [here](https://github.com/bevyengine/bevy/issues/6417). The gist
+of it was that you could see the memory of Bevy growing with just default plugins plus
+a single camera being spawned. This likely meant that the problem was related to rendering
+as most of that logic doesn't run unless there is a camera. Because of rust's memory
+guarantee's this likely meant something was being added, but not removed. This could
+be potentially be an asset or entity being repeated added without being removed or some
+collection continually growing. This could be any number of things since rendering is a
+complicated area, so I needed more clues about what was happening.
 
-I'm on Windows, so [Valgrind](https://valgrind.org/) wasn't an option. While looking for
-an option that would work, I lucked onto [leak-detector-allocator](https://crates.io/crates/leak-detect-allocator)
+It's about a 2kb/s sized leak from my investigations and so seemed to be something that
+was happening during every frame. I knew there were tools for investigating all the
+allocations and deallocations happening in a program, so I started to do research on
+what was available. I'm on Windows, so a commonly recommended tool like [Valgrind](https://valgrind.org/) 
+wasn't an option. While looking for some software that would work on windows, I 
+lucked onto [leak-detector-allocator](https://crates.io/crates/leak-detect-allocator)
 in crates.io. `leak-detector-allocator` replaces the global allocator and then tracks the 
 allocations and deallocations in your rust program and reports any allocations without
-a corresponding deallocation. 
+a corresponding deallocation. This seemed like it would work reasonably well if I could
+get it to work.
 
 I combined the example from the issue and the example code from the crate to log the allocations
 at specific frames. Using this allocator makes things run about 10x slower and I'm using debug mode
