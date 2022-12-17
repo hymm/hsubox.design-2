@@ -11,7 +11,7 @@ html {
     --link-color: var(--light-amber);
     --page-margin: 1rem;
     --page-max-width: calc(100vw - 2 * var(--page-margin));
-    --body-max-width: 50em;
+    --body-max-width: 800px;
 }
 
 html {
@@ -44,7 +44,9 @@ footer {
 
 article>pre {
     width: 100%;
+    max-width: var(--body-max-width);
     padding: 1rem 1.25rem;
+    overflow-x: auto;
 }
 
 code {
