@@ -3,14 +3,14 @@
 
 {% block content %}
 {% set section = get_section(path="posts/_index.md") %}
-<article class="four-fifth center">
+<article>
     <h1>{{ section.title }}</h1>
 
     {% for page in section.pages %}
-    <a href="{{ page.permalink | safe }}">
+    <a href="{{ page.permalink | safe }}" class="blog-summary">
         <article>
+            <div class="date">{{ page.date | date(formate="%d/%m/%Y") }}&nbsp;</div>
             <h3>{{ page.title }}</h3>
-            <div>{{ page.date | date(formate="%d/%m/%Y") }}&nbsp;</div>
             <section>{{ page.description }}</section>
         </article>
     </a>

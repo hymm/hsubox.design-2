@@ -41,3 +41,26 @@ article a {
 .github-link span {
     margin-left: 0.5rem;
 }
+
+.blog-summary {
+    margin-bottom: 2rem;
+}
+
+.blog-summary:last-child {
+    margin-bottom: 0;
+}
+
+.blog-summary .date {
+    font-size: 1rem;
+    margin-bottom: 0.125rem;
+}
+
+.blog-summary h3 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.blog-summary section {
+    font-size: 0.875rem;
+    line-height: 1.4;
+}

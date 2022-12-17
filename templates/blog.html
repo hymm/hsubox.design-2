@@ -7,10 +7,10 @@
 
     {% for page in section.pages %}
     <article class="card">
+        <div align="right">Published on: {{ page.date | date(formate="%d/%m/%Y") }}&nbsp;</div>
         <header>
             <h3>{{ page.title }}</h3>
         </header>
-        <div align="right">Published on: {{ page.date | date(formate="%d/%m/%Y") }}&nbsp;</div>
         <section class="center">{{ page.summary | safe }}</section>
         <footer>
             <a href="{{ page.permalink | safe }}#continue-reading" class="button">Read More</a>

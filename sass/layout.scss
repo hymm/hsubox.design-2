@@ -33,6 +33,12 @@ article {
 header {
     font-family: 'Overpass', sans-serif;
     font-weight: 600;
+    height: 3em;
+    margin-bottom: 3rem;
+}
+
+footer {
+    margin-top: 3rem;
 }
 
 
@@ -62,6 +68,7 @@ h6 {
 
 h1 {
     font-size: 1.75rem;
+    margin-top: 0;
 }
 
 h2 {
@@ -89,20 +96,12 @@ body {
     color: var(--text-color);
 }
 
-header {
-    height: 3em;
-}
-
 header,
 aside,
 footer {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-footer {
-    height: 25vh;
 }
 
 article {
@@ -138,4 +137,5 @@ blockquote p {
 footer ul {
     display: flex;
     gap: 1.5rem;
+    align-items: center;
 }
