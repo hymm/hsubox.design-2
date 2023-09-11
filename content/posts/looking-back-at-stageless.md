@@ -21,7 +21,7 @@ Officially known as "Scheduling V3", the stageless work was a rewrite of system 
 
 * Remove looping run criteria and just make run criteria return a simple bool
 * Replace looping run criteria with looping inside an exclusive system instead. No engine changes was necessary to enable this. But `States` and `FixedTimeSteps` needed to be ported to use this method.
-* Allow ordering exclusive systems with normal systems, which would allow manually adding a sync point for commands to be applied anywhere. Before, stages could only be scheduled at the beginning or end of a stage.
+* Allow ordering exclusive systems with normal systems, which would allow manually adding a sync point for commands to be applied anywhere. Before, exclusive sytems could only be scheduled at the beginning or end of a stage.
 
 ## Timeline
 
