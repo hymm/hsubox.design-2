@@ -9,7 +9,7 @@ tags = ["bevy", "stageless"]
 
 # Looking Back at Stageless
 
-[Bevy's 3rd birthday](https://bevyengine.org/news/bevys-third-birthday/) happened recently. In the past year I've participated in game jams with Bevy and contributed in various ways. But for this post I'd like to put a spotlight on the stageless scheduling rewrite that was finished back in March. Much of the heavy lifting for it was done by @alice-i-cecile and @maniwani (with honorable mention to @cart), but I'd like to think I contributed significantly by providing ideas, reviewing things, and fixing bugs in the final implementation. First and foremost I'd like to thank everyone who I don't mention in this post that contributed ideas and reviews. Without you stageless wouldn't have happened.
+[Bevy's 3rd birthday](https://bevyengine.org/news/bevys-third-birthday/) happened recently. In the vein of the linked post, I'll take this as an opportunity to reflect. In the past year I've had some significant contributions to bevy including finishing [pipelined rendering](https://github.com/bevyengine/bevy/pull/6503), but for this post I'd like to focus in on the year and a half journey of the stageless scheduling rewrite. Much of the heavy lifting for it was done by @alice-i-cecile and @maniwani (with honorable mention to @cart), but I'd like to think I contributed significantly by providing ideas, reviewing things, and fixing bugs in the final implementation. From gathering ideas to the implementation pr and numerous follow up PRs, it was quite the project. I'd like to take this time to reflect a bit on the work and what went right and what went wrong.
 
 ## Intro
 
@@ -43,49 +43,45 @@ What follows is a rough timeline of the year and a half journey to bring stagele
 * **Mar 6, 2023** Bevy 0.10 is released with Schedule V3. In the month between the previous and the release there was a lot of reviewing and fixing of bugs due to the new code.
 * **Mar 13, 2023** [Schedule First and Removing Base Sets](https://github.com/bevyengine/bevy/pull/8079). Base sets ended up being a confusing concept for users to learn. This pr removes base sets and makes which schedule a system belongs to an explicit rather than implicit API. This was actually an option considered during the discussions that led to base sets, but base sets were chosen due to being a more succinct api.
 
-## Post Mortem
+## Post Mortem on the RFC process
+### What Went Right
 
-First of all I'll say that from a user perspective Scheduling V3 is very successful. It reduced the concepts and thinking needed around scheduling and generally made things way more ergonomic. The process to get there had it's ups and downs though.
+* We were able to pare down all the ideas from the earlier discussion down to an MVP. Some things got cut like auto sync points, atomic system sets, and if needed ordering contraints.
+* Seeing things on paper really let us understand how all the pieces would fit together.
 
-### Are RFCs useful?
-The RFC process was a mix of good and bad. 
+### What Went Wrong
 
-### RFCs What went right
+* The Github interface for reviewing PRs really did not work well. 
+    * It was easy for comments to get lost and buried as the text was changed. 
+    * Line-by-line editting encouraged nit picking on working when the larger concepts had not been nailed down yet.
+* The final RFC was probably too big. Once the big concepts had been nailed down, it probably should have been broken up. The size of the RFC made it hard to review and hard to revise. Smaller PRs would have given better focus to each feature, "Run Conditions", "States and Fixed Timesteps", and "Ordering Exclusive Systems". 
 
-* pared down the implementation to a MVP. A lot of feature got cut that were discussed like auto sync points, atomic system sets, and if-needed ordering constraints.
-* got to really understand how the pieces of stageless fit together
+### How do RFCs fit into current Bevy?
 
-### RFCs What went wrong
+I think that having seen the work that went into this proposal, people are now reluctant to open their own RFCs. They might think it'll be easier to just open a PR and hash things out there. I suspect that there are current PRs that would have been better served going through the RFC process as they get hung up on their more controversial aspects until the author gets too busy to continue or loses interest.
 
-* The final RFC was a little too much for one RFC. Probably should have been split up.
-* A lot of the early review was over minor stuff like wording.
-* too many API details in early versions which had to be continuously revised as implementations were created.
-* Github PR format not the best for editting and commenting on prose.
+Stageless itself should probably have had a more formal Pre-RFC period where what features needed to be included and which features should be cut was decided. A lot of the early reviews of stageless focused too much on the details. Cart has been doing this to effect with his recent rewrites like with [assets](https://github.com/bevyengine/bevy/discussions/3972) and [scenes](https://github.com/bevyengine/bevy/discussions/9538). Though a missing step here is actually writing the RFC. Cart gets away with this because of his BDFL status and his PRs always get priority. But I think the average contributor should consider writing RFCs for more complicated PRs to more smoothly get their PRs merged.
 
-### Implementation What Went Right
+In general we need more features to go through the RFC process and see if we can iron out the flaws that currently exist and give a better path for controversial changes to be implemented. Especially now that we have SME's that can merge RFCs.
 
-* The API users got was in the end was much more ergonomic and intuitive than what existed before
-* Most of what was changed was a reframing and extending the capabilities of what already existed. Doing this led to a simpler mental model needed around scheduling
+## Post Mortem on the Implementation
+### What Went Right
 
-### Implementation What Went Wrong
+* From a user perspective the scheduling rewrite is very successful. After a few follow up PRs, I've only really seen good things said about the new APIs.
+* Most of what was changed was a reframing and extending the capabilities of what already existed. Doing this led to a simpler mental model needed around scheduling.
 
-* We should have broken up the initial PR. Alice and I had a plan for this, but got pushback. I should have fought a lot harder than I did to actually split things up. Having such a large PR led to a lot of bugs and contributed to Alice and I burning out trying to get things ready for 0.10.
-* There's still confusion among users of when to use Schedules vs SystemSets vs States. Some of this is a lack of teaching tools, but some of it suggests that we should try and simplify and combine the concepts further.
-* Users still want nested states. Multiple states can work for most scenarios, but cleanup which needs a specific ordering for entering/exiting states can be a problem.
+### What Went Wrong
+
 * Calling the whole thing "Stageless". What we ended up with looked a lot like stages at a macro level. Just that the stages allow very different things to happen inside of them.
+* We should have broken up the initial PR. Alice and I had a plan for breaking things up, but got pushback. I should have fought a lot harder than I did to actually split things up. Having such a large PR led to a lot of bugs and contributed to Alice and I burning out trying to get things ready for 0.10. Things could have been done more incrementally, by (1) looping in exclusive systems for states and fixed time steps, (2) making run criteria a bool, (3) allow ordering exclusive systems with regular systems, and (4) finally reworking the executor to support easily composable run criteria and system sets. This would have allowed getting improvements to users quicker and reduced the burden on reviewers.
 
-## So what can we learn for future RFCs, PRs and rewrites?
+### New Rule: Always encourage breaking up large PRs
 
-### RFCs have a weird place in current Bevy
-
-The RFC process is a bit flawed for Bevy currently. A lot of this is due to Github's PR interface which encourages nit picking and is very unideal for editting prose. There should have been a pre-RFC discussion where the actual proposal was available to comment on for the large scale ideas. The forum style discussions would have avoided a lot of nit picking. Cart has been doing this with the assets and scene rewrites. One issue with this seems to be that these never get promoted to being actual rfcs. That's probably ok, but then where do rfcs actually fit into the proces? Maybe for people other than Cart this is needed as a accepted rfc means that controversial prs can be merge without his approval.
-
-### Break up large PRs
-
-Always encourage breaking up large PRs. Large PRs are hard to merge because the most limiting factor with Bevy velocity right now is reviewer time. Large PRs do not respect reviewer time. With large rewrites this probably means figuring out a way for both the original code and the rewrite to live in the repository at the same time. This is not ideal as fixes may need to be applied to both sets of code. But this seems to be the least worst solution.
-
+My new personal rule for my own work and in reviews is to "always encourage breaking up large PRs". Large PRs are hard to merge because the most limiting factor with Bevy velocity right now is reviewer time. Large PRs do not respect reviewer time. With large rewrites this probably means figuring out a way for both the original code and the rewrite to live in the repository at the same time. This is not ideal as fixes may need to be applied to both sets of code. But this seems to be the least worst solution.
 
 ## Future Scheduling Stuff I may work on
 * **Auto Sync Points** I'm currently trying to pick this work back up. Users are currently encouraged to write `(my_command_system, apply_deffered, needs_to_observe_first_systems_commands).chain()`, when there's a problem with a systems not seeing another system's comamnds. The problem with this is that it could lead to an overly linear schedule with too many `apply_deferred` systems. The scheduler can be made to insert sync points automatically when there's a before/after relation between two systems with commands.
 * Scheduling still isn't as easy or understandable as writing imperative code. This is partially just a consequence of having multithreaded scheduling, but I'd like to experiment and see if there's a way of making it easier to understand. It might be possible with something like allowing writing the schedule using async/await.
 * Data privacy. A lot of my [thinking](https://github.com/hymm/rfcs/blob/side-effect-lifecycle-scheduling/rfcs/36-side-effect-lifecycle-scheduling.md) in the intial period of thinking about stageless was around dirty state and how to prevent the wrong systems from seeing that dirty state. Stageless didn't add anything to help solve these problems. I'd like to continue my thinking around it and see if there's a way to solve the problem in ECS. 
+* There's still confusion among users of when to use Schedules vs SystemSets vs States. Some of this is a lack of teaching tools, but some of it suggests that we should try and simplify and combine the concepts further.
+* Users still want nested states. Multiple states can work for most scenarios, but cleanup which needs a specific ordering for entering/exiting states can be a problem.
