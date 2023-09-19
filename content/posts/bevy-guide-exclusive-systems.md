@@ -23,23 +23,55 @@ There are two types of systems that you will encounter regularly in Bevy. Normal
 
 There are a couple big advantages to exclusive systems. One is that all modifications to world happen immediately. The other being when it's hard to specify all your system params up front. i.e. user callbacks. Some disadvantages would be having to run single threaded and that it can be hard to get multiple things out of the world do to mutability rules.
 
-## Modifying the World
-
-### EntityMut
-
-### EntityRef
 
 ## ExclusiveSystemParam's
 
 Besides `&mut World` there are 3 other types that are allowed to follow `&mut World` in the function signature.
 
+### `&mut QueryState` and `&mut SystemState`
+
+```rust,hide_lines=1-7
+use bevy::prelude::*;
+
+#[derive(Component)]
+struct Component1;
+
+#[derive(Component)]
+struct Component2;
+
+fn query_state(
+  world: &mut World, 
+  // we can specify the query params like we do with `Query`
+  query: &mut QueryState<(&Component1, &Component2)>) {
+  for (c1, c2) in query.iter(world) {
+    // ...
+  }
+}
+
+fn system_state(
+  world: &mut World,
+  // we can use any params that work normally with systems
+)
+
+```
+
+`QueryState` and `SystemState` are used to get queries and system params from the world respectively. 
+
+* cached for you
+* are the underlying types for systems and queries respectively that cache state for system params.
+* 
+
+
+
 ### `Local`
 
 
-### `&mut SystemState`
 
+## Modifying the World Directly
 
-### `&mut QueryState`
+### EntityMut
+
+### EntityRef
 
 ## Taking ownership of data
 
@@ -55,4 +87,12 @@ Besides `&mut World` there are 3 other types that are allowed to follow `&mut Wo
 
 ### ParamState
 
-## Running Schedules
+
+## Common Patterns
+
+### running a closure
+
+### Running Schedules
+
+
+### Running systems

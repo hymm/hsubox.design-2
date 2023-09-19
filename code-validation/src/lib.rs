@@ -1,4 +1,4 @@
 mod posts {
-  #[doc = include_str!("../../content/posts/test-post.md")]
-  mod test_post {}
+  #[doc = include_str!("../../content/posts/bevy-guide-exclusive-systems.md")]
+  mod bevy_guide_exclusive_systems {}
 }
