@@ -8,7 +8,7 @@ compile_sass = true
 build_search_index = true
 
 # Generate rss feed
-generate_feed = true 
+generate_feeds = true
 
 [markdown]
 # Whether to do syntax highlighting
